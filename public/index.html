@@ -1,76 +1,24 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <title>CRUD Empleados</title>
-        <link rel="stylesheet" href="styles.css">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
 
-    <body>
+    <div class="container">
+        <h2>Iniciar Sesión</h2>
 
-        <div class="container">
+        <input type="email" id="email" placeholder="Correo">
+        <input type="password" id="password" placeholder="Contraseña">
 
-            <h2>Registro de Empleado</h2>
+        <button onclick="login()">Ingresar</button>
 
-            <form id="employeeForm">
+        <p id="mensaje"></p>
+    </div>
 
-                <input type="text" name="nombre" placeholder="Nombre">
-                <input type="text" name="apellido" placeholder="Apellido">
-                <input type="email" name="email" placeholder="Email">
-                <input type="number" name="edad" placeholder="Edad">
-                <input type="text" name="telefono" placeholder="Teléfono">
-                <input type="number" name="salario" placeholder="Salario">
-                <input type="date" name="fecha_nacimiento">
-                <input type="text" name="direccion" placeholder="Dirección">
+    <script src="auth.js"></script>
 
-                <select name="activo">
-                    <option value="true">Activo</option>
-                    <option value="false">Inactivo</option>
-                </select>
-
-                <button type="submit">Guardar</button>
-
-
-                <button type="button" id="clearForm" class="btn-clear">
-                Limpiar
-                </button>
-
-            </form>
-
-        </div>
-
-        <div class="table-container">
-
-            <h2>Lista de Empleados</h2>
-
-            <table id="employeesTable">
-
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Email</th>
-                        <th>Edad</th>
-                        <th>Teléfono</th>
-                        <th>Activo</th>
-                        <th>Salario</th>
-                        <th>Fecha nacimiento</th>
-                        <th>Dirección</th>
-                        <th>Editar</th>
-                        <th>Eliminar</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-        <script src="script.js"></script>
-
-    </body>
+</body>
 </html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Empleados</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- 🔐 HEADER -->
+    <div style="width:80%; margin:20px auto; display:flex; justify-content:space-between; align-items:center;">
+        <h1>Sistema de Empleados</h1>
+        <button onclick="logout()" style="width:auto; padding:8px 15px;">Cerrar sesión</button>
+    </div>
+
+
+    <!-- 📝 FORMULARIO -->
+    <div class="container">
+
+        <h2>Registro de Empleado</h2>
+
+        <form id="employeeForm">
+
+            <input type="text" name="nombre" placeholder="Nombre" required>
+            <input type="text" name="apellido" placeholder="Apellido" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="number" name="edad" placeholder="Edad">
+            <input type="text" name="telefono" placeholder="Teléfono">
+            <input type="number" name="salario" placeholder="Salario">
+            <input type="date" name="fecha_nacimiento">
+            <input type="text" name="direccion" placeholder="Dirección">
+
+            <select name="activo">
+                <option value="true">Activo</option>
+                <option value="false">Inactivo</option>
+            </select>
+
+            <button type="submit">Guardar</button>
+
+            <button type="button" id="clearForm" class="btn-clear">
+                Limpiar
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- 📊 TABLA -->
+    <div class="table-container">
+
+        <h2>Lista de Empleados</h2>
+
+        <table id="employeesTable">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Email</th>
+                    <th>Edad</th>
+                    <th>Teléfono</th>
+                    <th>Activo</th>
+                    <th>Salario</th>
+                    <th>Fecha nacimiento</th>
+                    <th>Dirección</th>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <!-- Se llena dinámicamente -->
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- 🚀 SCRIPT -->
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>
