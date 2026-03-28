@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRUD Proyectos</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h2>Módulo Proyectos</h2>
+
+      <form id="projectForm">
+        <input type="text" name="nombre" placeholder="Nombre del proyecto" required />
+        <input type="number" name="presupuesto" placeholder="Presupuesto" min="0" step="0.01" />
+
+        <button type="submit">Guardar</button>
+        <button type="button" id="clearForm" class="btn-clear">Limpiar</button>
+      </form>
+
+      <a href="/index.html" style="display:block;margin-top:12px;">← Volver</a>
+    </div>
+
+    <div class="table-container">
+      <h2>Lista de Proyectos</h2>
+
+      <table id="projectsTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Presupuesto</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <script src="projects.js"></script>
+  </body>
+</html>
