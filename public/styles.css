@@ -33,6 +33,14 @@ button:hover {
   background: #1a5bb8;
 }
 
+.btn-clear{
+  background: #6c757d;
+}
+
+.btn-clear:hover{
+  background: #545b62;
+}
+
 .table-container {
   width: 80%;
   margin: 30px auto;
