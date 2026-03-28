@@ -1,5 +1,6 @@
 const express = require("express")
 const router = express.Router()
+const { verifyToken, verifyRole } = require("../middleware/auth")
 const { createClient } = require("@supabase/supabase-js")
 
 // verificar variables de entorno
@@ -90,5 +91,7 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json({ error: err.message })
   }
 })
+
+
 
 module.exports = router
