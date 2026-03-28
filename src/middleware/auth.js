@@ -23,8 +23,8 @@ const verifyToken = async (req, res, next) => {
   next()
 }
 
-// ✅ Verificar rol
-const verifyRole = (rolPermitido) => {
+// 🔥 NUEVO: múltiples roles
+const verifyRoles = (rolesPermitidos) => {
   return async (req, res, next) => {
     const { data, error } = await supabase
       .from("usuarios")
@@ -36,7 +36,7 @@ const verifyRole = (rolPermitido) => {
       return res.status(500).json({ error: error.message })
     }
 
-    if (data.rol !== rolPermitido) {
+    if (!rolesPermitidos.includes(data.rol)) {
       return res.status(403).json({ error: "Acceso denegado" })
     }
 
@@ -44,4 +44,4 @@ const verifyRole = (rolPermitido) => {
   }
 }
 
-module.exports = { verifyToken, verifyRole }
+module.exports = { verifyToken, verifyRoles }

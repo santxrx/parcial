@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel Admin - Crear Usuario</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="container">
+    <h2>Crear Usuario</h2>
+
+    <form id="createUserForm">
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="password" id="password" placeholder="Contraseña" required>
+
+      <select id="rol">
+        <option value="empleado">Empleado</option>
+        <option value="admin">Administrador</option>
+      </select>
+
+      <button type="submit">Crear Usuario</button>
+    </form>
+
+    <p id="message"></p>
+  </div>
+
+  <script src="admin.js"></script>
+  <script src="menu.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>

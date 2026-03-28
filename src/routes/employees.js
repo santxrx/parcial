@@ -1,35 +1,25 @@
 const express = require("express")
 const router = express.Router()
-const { verifyToken, verifyRole } = require("../middleware/auth")
+const { verifyToken, verifyRoles } = require("../middleware/auth")
 const { createClient } = require("@supabase/supabase-js")
-
-// verificar variables de entorno
-if (!process.env.SUPABASE_URL || !process.env.SUPABASE_KEY) {
-  console.error("❌ Error: Variables de entorno de Supabase no encontradas")
-}
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_KEY
 )
 
-// GET todos los registros
-router.get("/", async (req, res) => {
+// 📖 TODOS pueden ver
+router.get("/", verifyToken, async (req, res) => {
   try {
-    const { data, error } = await supabase
-      .from("crud")
-      .select("*")
-
+    const { data, error } = await supabase.from("crud").select("*")
     if (error) throw error
-
     res.json(data)
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
 })
 
-// GET registro por id
-router.get("/:id", async (req, res) => {
+router.get("/:id", verifyToken, async (req, res) => {
   try {
     const { data, error } = await supabase
       .from("crud")
@@ -38,60 +28,147 @@ router.get("/:id", async (req, res) => {
       .single()
 
     if (error) throw error
-
     res.json(data)
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
 })
 
-// CREATE registro
-router.post("/", async (req, res) => {
+// 🔥 CREATE
+router.post("/", verifyToken, async (req, res) => {
   try {
-    const { data, error } = await supabase
-      .from("crud")
-      .insert([req.body])
+    const userId = req.user.id
 
-    if (error) throw error
+    // obtener rol del usuario
+    const { data: userData } = await supabase
+      .from("usuarios")
+      .select("rol")
+      .eq("id", userId)
+      .single()
 
-    res.json(data)
+    const rol = userData.rol
+
+    // 👉 ADMIN puede todo
+    if (rol === "admin") {
+      const { data, error } = await supabase.from("crud").insert([req.body])
+      if (error) throw error
+      return res.json(data)
+    }
+
+    // 👉 EMPLEADO solo si es cliente
+    if (rol === "empleado" && req.body.tipo === "cliente") {
+      const { data, error } = await supabase.from("crud").insert([req.body])
+      if (error) throw error
+      return res.json(data)
+    }
+
+    return res.status(403).json({ error: "No tienes permiso" })
+
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
 })
 
-// UPDATE registro
-router.put("/:id", async (req, res) => {
+// 🔥 UPDATE
+router.put("/:id", verifyToken, async (req, res) => {
   try {
-    const { data, error } = await supabase
+    const userId = req.user.id
+
+    // rol del usuario
+    const { data: userData } = await supabase
+      .from("usuarios")
+      .select("rol")
+      .eq("id", userId)
+      .single()
+
+    const rol = userData.rol
+
+    // registro a modificar
+    const { data: registro } = await supabase
       .from("crud")
-      .update(req.body)
+      .select("*")
       .eq("id", req.params.id)
+      .single()
 
-    if (error) throw error
+    // 👉 ADMIN puede todo
+    if (rol === "admin") {
+      const { data, error } = await supabase
+        .from("crud")
+        .update(req.body)
+        .eq("id", req.params.id)
 
-    res.json(data)
+      if (error) throw error
+      return res.json(data)
+    }
+
+    // 👉 EMPLEADO solo si es cliente
+    if (rol === "empleado" && registro.tipo === "cliente") {
+      const { data, error } = await supabase
+        .from("crud")
+        .update(req.body)
+        .eq("id", req.params.id)
+
+      if (error) throw error
+      return res.json(data)
+    }
+
+    return res.status(403).json({ error: "No tienes permiso" })
+
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
 })
 
-// DELETE registro
-router.delete("/:id", async (req, res) => {
+// 🔥 DELETE
+router.delete("/:id", verifyToken, async (req, res) => {
   try {
-    const { error } = await supabase
+    const userId = req.user.id
+
+    const { data: userData, error: errorUser } = await supabase
+      .from("usuarios")
+      .select("rol")
+      .eq("id", userId)
+      .single()
+
+    if (errorUser) throw errorUser
+
+    const rol = userData.rol
+
+    const { data: registro, error: errorRegistro } = await supabase
       .from("crud")
-      .delete()
+      .select("*")
       .eq("id", req.params.id)
+      .single()
 
-    if (error) throw error
+    if (errorRegistro) throw errorRegistro
 
-    res.json({ message: "Registro eliminado correctamente" })
+    if (rol === "admin") {
+      const { error } = await supabase
+        .from("crud")
+        .delete()
+        .eq("id", req.params.id)
+
+      if (error) throw error
+
+      return res.json({ message: "Eliminado" })
+    }
+
+    if (rol === "empleado" && registro.tipo === "cliente") {
+      const { error } = await supabase
+        .from("crud")
+        .delete()
+        .eq("id", req.params.id)
+
+      if (error) throw error
+
+      return res.json({ message: "Eliminado" })
+    }
+
+    return res.status(403).json({ error: "No tienes permiso" })
+
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    return res.status(500).json({ error: err.message })
   }
 })
-
-
 
 module.exports = router

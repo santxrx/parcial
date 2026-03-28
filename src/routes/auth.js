@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const { createClient } = require("@supabase/supabase-js")
-const { verifyToken, verifyRole } = require("../middleware/auth")
+const { verifyToken, verifyRoles } = require("../middleware/auth")
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -9,11 +9,10 @@ const supabase = createClient(
 )
 
 // 👑 ADMIN CREA USUARIOS
-router.post("/create-user", verifyToken, verifyRole("admin"), async (req, res) => {
+router.post("/create-user", verifyToken, verifyRoles(["admin"]), async (req, res) => {
   const { email, password, rol } = req.body
 
   try {
-    // 1. Crear usuario en Auth
     const { data, error } = await supabase.auth.signUp({
       email,
       password
@@ -21,7 +20,6 @@ router.post("/create-user", verifyToken, verifyRole("admin"), async (req, res) =
 
     if (error) throw error
 
-    // 2. Guardar rol en tabla
     const { error: errorInsert } = await supabase
       .from("usuarios")
       .insert([{
@@ -44,7 +42,6 @@ router.post("/register", async (req, res) => {
   const { email, password, rol } = req.body
 
   try {
-    // 1. Crear usuario en Auth
     const { data, error } = await supabase.auth.signUp({
       email,
       password
@@ -52,7 +49,6 @@ router.post("/register", async (req, res) => {
 
     if (error) throw error
 
-    // 2. Guardar rol en tabla usuarios
     const { error: errorInsert } = await supabase
       .from("usuarios")
       .insert([{
@@ -70,32 +66,27 @@ router.post("/register", async (req, res) => {
   }
 })
 
-
 // 🔐 LOGIN
 router.post("/login", async (req, res) => {
   const { email, password } = req.body
 
   try {
-    // 1. Login en Supabase
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password
     })
-    
 
     if (error) throw error
-    console.log("ID AUTH:", data.user.id)
-    console.log("EMAIL AUTH:", data.user.email)
-    // 2. Obtener rol
-    const { data: userData, error: errorRol } = await supabase
+
+    const { data: userData } = await supabase
       .from("usuarios")
       .select("rol")
       .eq("id", data.user.id)
-      .maybeSingle()
+      .single()
 
     if (!userData) {
-  return res.status(404).json({ error: "Usuario sin rol asignado" })
-}
+      return res.status(404).json({ error: "Usuario sin rol asignado" })
+    }
 
     res.json({
       message: "Login exitoso",
@@ -109,19 +100,15 @@ router.post("/login", async (req, res) => {
   }
 })
 
-//LISTAR USUARIOS
-router.get("/users", verifyToken, verifyRole("admin"), async (req, res) => {
-  const { data, error } = await supabase
-    .from("usuarios")
-    .select("*")
-
+// 👑 SOLO ADMIN VE USUARIOS
+router.get("/users", verifyToken, verifyRoles(["admin"]), async (req, res) => {
+  const { data, error } = await supabase.from("usuarios").select("*")
   if (error) return res.status(500).json({ error: error.message })
-
   res.json(data)
 })
 
-//ELIMINA USUARIOS
-router.delete("/users/:id", verifyToken, verifyRole("admin"), async (req, res) => {
+// 👑 SOLO ADMIN ELIMINA USUARIOS
+router.delete("/users/:id", verifyToken, verifyRoles(["admin"]), async (req, res) => {
   const { id } = req.params
 
   try {

@@ -3,6 +3,13 @@ const API_URL = "http://localhost:3000/employees";
 const form = document.getElementById("employeeForm");
 const table = document.querySelector("#employeesTable tbody");
 
+// 🔥 NUEVO: contenedor del formulario (título + form)
+const formContainer = document.getElementById("formContainer");
+
+// 🔥 COLUMNAS
+const colEditar = document.getElementById("colEditar");
+const colEliminar = document.getElementById("colEliminar");
+
 let editingId = null;
 
 // Obtener token y rol
@@ -14,8 +21,23 @@ if (!token) {
   window.location.href = "index.html";
 }
 
-// Cargar empleados al iniciar
-document.addEventListener("DOMContentLoaded", loadEmployees);
+// 🔥 OCULTAR SEGÚN ROL
+document.addEventListener("DOMContentLoaded", () => {
+
+  console.log("ROL ACTUAL:", rol); // 👈 debug
+
+  if (rol === "empleado" || rol === "cliente") {
+
+    // 🔥 ocultar TODO el bloque (título + formulario)
+    if (formContainer) formContainer.style.display = "none";
+
+    // 🔥 ocultar columnas
+    if (colEditar) colEditar.style.display = "none";
+    if (colEliminar) colEliminar.style.display = "none";
+  }
+
+  loadEmployees();
+});
 
 
 // CARGAR EMPLEADOS
@@ -35,6 +57,22 @@ async function loadEmployees() {
 
       const row = document.createElement("tr");
 
+      // 🔥 CONTROL DE BOTONES
+      let botonesEditar = "";
+      let botonesEliminar = "";
+
+      // 👑 ADMIN → todo
+      if (rol === "admin") {
+        botonesEditar = `<button class="edit" data-id="${emp.id}">Editar</button>`;
+        botonesEliminar = `<button class="delete" data-id="${emp.id}">Eliminar</button>`;
+      }
+
+      // 👨‍💼 EMPLEADO → solo clientes
+      if (rol === "empleado" && emp.tipo === "cliente") {
+        botonesEditar = `<button class="edit" data-id="${emp.id}">Editar</button>`;
+        botonesEliminar = `<button class="delete" data-id="${emp.id}">Eliminar</button>`;
+      }
+
       row.innerHTML = `
         <td>${emp.id}</td>
         <td>${emp.nombre}</td>
@@ -47,24 +85,12 @@ async function loadEmployees() {
         <td>${emp.fecha_nacimiento}</td>
         <td>${emp.direccion || ""}</td>
 
-        <td>
-          <button class="edit" data-id="${emp.id}">Editar</button>
-        </td>
-
-        <td>
-          <button class="delete" data-id="${emp.id}">Eliminar</button>
-        </td>
+        <td>${botonesEditar}</td>
+        <td>${botonesEliminar}</td>
       `;
 
       table.appendChild(row);
     });
-
-    // Control de rol (ocultar botones si no es admin)
-    if (rol !== "admin") {
-      document.querySelectorAll(".delete").forEach(btn => btn.style.display = "none");
-      document.querySelectorAll(".edit").forEach(btn => btn.style.display = "none");
-      document.querySelector("button[type='submit']").style.display = "none";
-    }
 
   } catch (error) {
     console.error(error);
@@ -168,7 +194,10 @@ table.addEventListener("click", async function (e) {
 
 // LIMPIAR FORMULARIO
 const clearBtn = document.getElementById("clearForm");
-clearBtn.addEventListener("click", function () {
-  form.reset();
-  editingId = null;
-});
+
+if (clearBtn) {
+  clearBtn.addEventListener("click", function () {
+    form.reset();
+    editingId = null;
+  });
+}

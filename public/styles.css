@@ -88,3 +88,22 @@ cursor:pointer;
 .edit:hover{
 background:#d9962d;
 }
+
+.menu {
+  background: #d6d9df;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.menu button {
+  background: #2c7be5;
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.menu button:hover {
+  background: #2c7be5;
+}
