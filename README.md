@@ -2,73 +2,7 @@
 
 Backend en **Node.js + Express** conectado a **Supabase (Postgres)**, con dashboards sencillos en **HTML/JS** servidos desde la carpeta `public/`.
 
-## 🚄 Despliegue en Railway (frontend + backend juntos)
-
-Este proyecto ya sirve el frontend como estático desde `public/`:
-
-- `app.use(express.static("public"))`
-
-Así que en Railway puedes desplegar **un solo servicio** (Express) y tendrás:
-
-- Frontend: `https://TU-PROYECTO.up.railway.app/index.html`
-- API: `https://TU-PROYECTO.up.railway.app/employees` (y demás)
-
-### 1) Crear proyecto en Railway
-
-Railway → New Project → Deploy from GitHub → elige este repo.
-
-### 2) Variables de entorno
-
-En Railway → Variables:
-
-- `SUPABASE_URL`
-- `SUPABASE_KEY`
-
-Opcional:
-
-- `CORS_ORIGINS` (si vas a consumir la API desde otro dominio; si front+back están juntos, no es necesario)
-
-> `PORT` no lo configures: Railway lo inyecta.
-
-### 3) Start command
-
-Usa:
-
-- `npm run start:prod`
-
-### 4) Abrir el sitio
-
-Entra a la URL del servicio y abre `index.html`.
-
-## ✅ Requisitos
-
-- Node.js (recomendado: 18+)
-
-## 📦 Instalación
-
-```bash
-npm install
-```
-
-## ▶️ Ejecutar
-
-```bash
-npm start
-```
-
-Por defecto levanta en: `http://localhost:3000`
-
-> El servidor también sirve contenido estático desde `public/`.
-
-## 🔐 Variables de entorno
-
-Crea un archivo `.env` en la raíz del proyecto:
-
-```ini
-SUPABASE_URL=TU_SUPABASE_URL
-SUPABASE_KEY=TU_SUPABASE_ANON_KEY
-PORT=3000
-```
+## 🚄 Despliegue en Railway: [link app](https://parcial1pruebas-production.up.railway.app/)
 
 ## 🧭 Módulos y páginas
 

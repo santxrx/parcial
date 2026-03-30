@@ -31,7 +31,7 @@ app.use(
 )
 app.use(express.json())
 
-app.use(express.static("public"))   // 👈 ESTA LÍNEA ES LA CLAVE
+app.use(express.static("public"))
 
 app.use("/employees", employeesRoutes)
 app.use("/departments", departmentsRoutes)
