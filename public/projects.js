@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000/projects"
+const API_URL = "/projects"
 
 const form = document.getElementById("projectForm")
 const table = document.querySelector("#projectsTable tbody")

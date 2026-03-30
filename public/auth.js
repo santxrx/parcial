@@ -1,4 +1,4 @@
-const API_AUTH = "http://localhost:3000/auth";
+const API_AUTH = "/auth";
 
 // 🔐 LOGIN
 async function login() {

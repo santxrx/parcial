@@ -11,7 +11,24 @@ const projectsRoutes = require("./src/routes/projects")
 
 const app = express()
 
-app.use(cors())
+// CORS (Railway)
+// Configura CORS_ORIGINS con una lista separada por coma.
+// Ej: CORS_ORIGINS=https://tu-dominio.up.railway.app
+const corsOrigins = process.env.CORS_ORIGINS
+  ? process.env.CORS_ORIGINS.split(",").map((s) => s.trim()).filter(Boolean)
+  : null
+
+app.use(
+  cors(
+    corsOrigins
+      ? {
+          origin: corsOrigins,
+        }
+      : {
+          origin: true,
+        }
+  )
+)
 app.use(express.json())
 
 app.use(express.static("public"))   // 👈 ESTA LÍNEA ES LA CLAVE
