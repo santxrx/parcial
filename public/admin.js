@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000/auth/create-user";
+const API_URL = "/auth/create-user";
 
 const form = document.getElementById("createUserForm");
 const message = document.getElementById("message");
