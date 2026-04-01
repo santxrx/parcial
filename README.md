@@ -11,14 +11,10 @@ URL pública:
 
 - <https://parcial1pruebas-production.up.railway.app/>
 
-Para abrir el login:
-
-- <https://parcial1pruebas-production.up.railway.app/index.html>
-
 ## 🧪 Cómo probar (para otras personas)
 
 1) Entra al login: `/index.html`
-2) Inicia sesión con un usuario existente (o crea uno si tienes rol admin)
+2) Inicia sesión con un usuario existente
 3) Prueba los módulos:
 
 - Clientes/Empleados: `/employees.html`
@@ -27,13 +23,8 @@ Para abrir el login:
 
 ### Credenciales de prueba
 
-> Por seguridad, no se incluyen credenciales en el repo.
-
-Si necesitas que cualquiera pueda probar sin pedirte un usuario, crea en Supabase 1-2 cuentas de demo y deja aquí:
-
-- **Admin demo**: `EMAIL_AQUI` / `PASSWORD_AQUI`
-- **Empleado demo**: `EMAIL_AQUI` / `PASSWORD_AQUI`
-- **Cliente demo**: `EMAIL_AQUI` / `PASSWORD_AQUI`
+- **Admin demo**: `pedronavaja123@gmail.com` / `pedronavaja1234?`
+- **Empleado demo**: `santiagrtuaibzo@gmail.com` / `prubas12345?`
 
 ## 🧭 Endpoints principales
 
